@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+
+  "name": "求職小幫手",
+  "description": "讓你更加了解這家公司",
+  "version": "1.0",
+
+  "background" : {
+      "scripts": ["background.js"]
+  },
+  "permissions": [
+      "http://jobinfo.g0v.ronny.tw/",
+      "http://www.104.com.tw/",
+      "http://www.1111.com.tw/",
+      "http://www.yes123.com.tw/",
+      "http://www.518.com.tw/",
+      "tabs"
+  ],
+  "content_scripts" : [
+    {
+      "matches" : [
+        "http://www.104.com.tw/*",
+	"http://www.1111.com.tw/*",
+	"http://www.yes123.com.tw/*",
+	"http://www.518.com.tw/*"
+      ],
+      "js" : ["jquery.min.js", "contentscript.js"],
+      "run_at" : "document_idle",
+      "all_frames" : false
+    }
+  ],
+  "icons" : {
+    "48" : "sandwich-48.png",
+    "128" : "sandwich-128.png"
+  }
+}
