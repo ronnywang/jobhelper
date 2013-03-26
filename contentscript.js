@@ -53,14 +53,12 @@ var get_company_info = function(){
 	return;
     }
 
-    jQuery.get('http://jobhelper.g0v.ronny.tw/index/info?info=' + encodeURIComponent(JSON.stringify(params)), function(ret){
-	chrome.extension.sendRequest(ret, function(response) {});
-    }, 'json');
     return params;
 };
 
 var main = function(){
-    var params = get_company_info();
+    // TODO: 只有特定網站才要 sendRequest 來顯示 page action
+    chrome.extension.sendRequest({}, function(response){});
 };
 
 main();
