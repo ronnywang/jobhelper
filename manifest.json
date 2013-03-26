@@ -17,6 +17,11 @@
       "tabs",
       "storage"
   ],
+  "page_action" : {
+      "default_icon" : "icon-19.png",
+      "default_title" : "設定求職小幫手",
+      "default_popup" : "popup.html"
+  },
   "content_scripts" : [
     {
       "matches" : [
