@@ -9,7 +9,7 @@
       "scripts": ["background.js"]
   },
   "permissions": [
-      "http://jobinfo.g0v.ronny.tw/",
+      "http://jobhelper.g0v.ronny.tw/",
       "http://www.104.com.tw/",
       "http://www.1111.com.tw/",
       "http://www.yes123.com.tw/",

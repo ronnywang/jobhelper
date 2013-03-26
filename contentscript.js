@@ -53,7 +53,7 @@ var main = function(){
 	return;
     }
 
-    jQuery.get('http://jobinfo.g0v.ronny.tw/index/info?info=' + encodeURIComponent(JSON.stringify(params)), function(ret){
+    jQuery.get('http://jobhelper.g0v.ronny.tw/index/info?info=' + encodeURIComponent(JSON.stringify(params)), function(ret){
 	chrome.extension.sendRequest(ret, function(response) {});
     }, 'json');
 };
