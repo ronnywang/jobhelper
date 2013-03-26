@@ -22,9 +22,8 @@ var popup_function = function(params){
 };
 
 function onRequest(request, sender, sendResponse) {
-  // Show the page action for the tab that the sender (content script)
-  // was on.
-    chrome.tabs.executeScript(sender.tab.id, {code: "(" + popup_function + ')(' + JSON.stringify(request) + ')'});
+    // 顯示設定求職小幫手的 page action
+    chrome.pageAction.show(sender.tab.id);
 
   // Return nothing to let the connection be cleaned up.
   sendResponse({});
