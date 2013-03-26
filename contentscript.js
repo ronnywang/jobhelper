@@ -1,4 +1,4 @@
-var main = function(){
+var get_company_info = function(){
     var params = {};
     params.link = document.location.href;
 
@@ -56,6 +56,11 @@ var main = function(){
     jQuery.get('http://jobhelper.g0v.ronny.tw/index/info?info=' + encodeURIComponent(JSON.stringify(params)), function(ret){
 	chrome.extension.sendRequest(ret, function(response) {});
     }, 'json');
+    return params;
+};
+
+var main = function(){
+    var params = get_company_info();
 };
 
 main();
