@@ -1,4 +1,5 @@
 var storage = chrome.storage.local;
+var choosed_packages = {};
 
 var update_packages = function(){
     $.get('http://jobhelper.g0v.ronny.tw/api/getpackages', function(ret){
@@ -9,7 +10,8 @@ var update_packages = function(){
 };
 
 // 從 storage 中取得 packages 清單
-storage.get('packages', function(items){
+storage.get({packages: {}, choosed_packages: {}}, function(items){
+        choosed_packages = items.choosed_packages;
     if ('undefined' === typeof(items.packages) || 'undefined' === typeof(items.packages.fetch_at) || ((new Date()).getTime() - items.packages.fetch_at) > 86400 * 1000) {
 	update_packages();
     } else {
@@ -21,7 +23,10 @@ var show_packages = function(packages){
     $('#package-list').html('');
     for (var i = 0; i < packages.packages.length; i ++) {
 	var li_dom = $($('#li-tmpl').html());
-	$('input:checkbox', li_dom).val(packages.packages[i].package_id);
+	$('input:checkbox', li_dom).attr('value', packages.packages[i].id);
+        if ('undefined' !== typeof(choosed_packages[packages.packages[i].id])) {
+            $('input:checkbox', li_dom).prop('checked', true);
+        }
 	$('.package_name', li_dom).text(packages.packages[i].name);
 	$('#package-list').append(li_dom);
     }
@@ -32,4 +37,14 @@ var show_packages = function(packages){
 
 $('#fetch-package-btn').click(function(){
     update_packages();
+});
+
+$('#package-list').on('change', 'li input:checkbox', function(){
+    var self = $(this);
+    if (self.is(':checked')) {
+        choosed_packages[self.attr('value')] = true;
+    } else {
+        delete(choosed_packages[self.attr('value')]);
+    }
+    storage.set({choosed_packages: choosed_packages});
 });
