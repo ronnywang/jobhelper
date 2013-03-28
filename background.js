@@ -22,11 +22,17 @@ var popup_function = function(params){
 };
 
 function onRequest(request, sender, sendResponse) {
-    // 顯示設定求職小幫手的 page action
-    chrome.pageAction.show(sender.tab.id);
+    if (request.method== 'page') {
+        // 顯示設定求職小幫手的 page action
+        chrome.pageAction.show(sender.tab.id);
+    }
 
-  // Return nothing to let the connection be cleaned up.
-  sendResponse({});
+    if (request.method == 'add_match') {
+        chrome.tabs.executeScript(sender.tab.id, {code: "(" + popup_function + ')(' + JSON.stringify(request.params) + ')'});
+    }
+
+    // Return nothing to let the connection be cleaned up.
+    sendResponse({});
 };
 
 // Listen for the content script to send a message to the background page.

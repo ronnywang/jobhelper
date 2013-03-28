@@ -58,7 +58,29 @@ var get_company_info = function(){
 
 var main = function(){
     // TODO: 只有特定網站才要 sendRequest 來顯示 page action
-    chrome.extension.sendRequest({}, function(response){});
+    chrome.extension.sendRequest({method: 'page'}, function(response){});
+
+    var params = get_company_info();
+
+    if ('undefined' !== typeof(params.name)) {
+        get_choosed_packages(function(choosed_packages){
+            for (var id in choosed_packages) {
+                get_package_csv_by_id(id, function(package_csv){
+                    if ('undefined' == typeof(package_csv)) {
+                        return;
+                    }
+                    var rows;
+                    for (var i = 0; i < package_csv.length; i ++) {
+                        rows = package_csv[i];
+console.log(params.name + ' ' + rows[0]);
+                        if (params.name.indexOf(rows[0]) >= 0) {
+                            chrome.extension.sendRequest({method: 'add_match', params: params}, function(response) {});
+                        }
+                    }
+                });
+            }
+        });
+    }
 };
 
 main();
