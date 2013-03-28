@@ -1,7 +1,7 @@
-var popup_function = function(params){
+var popup_function = function(rows, package_info){
     if (!document.getElementById('CompanyInfo')) {
 	var content = "<div id='CompanyInfo' style='background: #cc103f; bottom: 0; padding: 5px; text-align: center; z-index: 99999; font-size: 14.5px; line-height: 1.5; color: #fff; position: fixed'>"
-	    + "<div id='CompanyInfoMessage'></div>"
+	    + "<ol id='CompanyInfoMessage'></ol>"
 	    + "<div style='color:#fff;font-weight:bold;float:right;padding-right:8px;width:46px;'>"
 	    + "<span id='CompanyInfoClose' style='cursor:pointer;'>&times;</div>"                
 	    + "</div></div>";
@@ -15,11 +15,23 @@ var popup_function = function(params){
 	document.getElementById('CompanyInfo').style.display = 'block';
     }
 
+    var htmlspecialchars = function(str){
+	var span_dom = document.createElement('span');
+	span_dom.innerText = str;
+	str = span_dom.innerHTML;
+	delete(span_dom);
+	return str;
+    };
+
     var info_dom = document.getElementById('CompanyInfo');
-    info_dom.style.background = ('undefined' === typeof(params.bgcolor)) ? 'yellow' : params.bgcolor;
-    info_dom.style.color = ('undefined' === typeof(params.fgcolor)) ? 'black' : params.fgcolor;
-    document.getElementById('CompanyInfoMessage').innerHTML = '<b>' + params.body + '</b>';
+    info_dom.style.background = 'yellow';
+    info_dom.style.color = 'black';
+    document.getElementById('CompanyInfoMessage').innerHTML += '<li>'
+	+ htmlspecialchars(rows[1]) + '. ' + htmlspecialchars(rows[2])
+	+ '[<a href="' + htmlspecialchars(package_info.url) + '" target="_blank">' + htmlspecialchars(package_info.name) + '</a>]'
+	+ '</li>';
 };
+
 
 function onRequest(request, sender, sendResponse) {
     if (request.method== 'page') {
@@ -28,7 +40,7 @@ function onRequest(request, sender, sendResponse) {
     }
 
     if (request.method == 'add_match') {
-        chrome.tabs.executeScript(sender.tab.id, {code: "(" + popup_function + ')(' + JSON.stringify(request.params) + ')'});
+        chrome.tabs.executeScript(sender.tab.id, {code: "(" + popup_function + ')(' + JSON.stringify(request.rows) + ',' + JSON.stringify(request.package_info) + ')'});
     }
 
     // Return nothing to let the connection be cleaned up.
