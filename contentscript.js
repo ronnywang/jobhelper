@@ -21,6 +21,25 @@ var get_company_info = function(){
 	}
 	
 	return;
+    } else if ('www.104temp.com.tw' == document.location.hostname) {
+	// 檢查所有 a dom, 如果 company_intro.jsp 開頭的不超過兩個不一樣的，就確定是這家公司了
+	var a_doms = $('a', document);
+	var a_dom;
+	for (var i = 0; i < a_doms.length; i ++) {
+	    a_dom = a_doms.eq(i);
+	    if (!a_dom.attr('href') || !a_dom.attr('href').match(/^company_intro\.jsp/)) {
+		continue;
+	    }
+	    if (params.company_link && params.company_link != a_dom.attr('href')) {
+		// 有兩家不一樣的公司，跳過
+		return;
+	    }
+	    params.company_link = a_dom.attr('href');
+	    params.name = a_dom.text();
+	    params.from = '104temp';
+	}
+
+	return params;
     } else if ('www.yes123.com.tw' == document.location.hostname) {
 	if (!jQuery('.comp_name').length) {
 	    return;
