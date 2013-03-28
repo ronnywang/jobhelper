@@ -62,7 +62,7 @@ var main = function(){
 
     var params = get_company_info();
 
-    if ('undefined' !== typeof(params.name)) {
+    if ('object' == typeof(params) && 'undefined' !== typeof(params.name)) {
         get_choosed_packages(function(choosed_packages){
             for (var id in choosed_packages) {
                 get_package_csv_by_id(id, function(package_csv){
