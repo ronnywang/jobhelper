@@ -15,7 +15,9 @@ var get_choosed_packages = function(cb){
 	    get_package_info(function(package_info){
 		var choosed_packages = {};
 		for (var i = 0; i < package_info.packages.length; i ++) {
-		    choosed_packages[package_info.packages[i].id] = true;
+		    if (package_info.packages[i].default) {
+			choosed_packages[package_info.packages[i].id] = true;
+		    }
 		}
 		update_choosed_packages(choosed_packages);
 		cb(choosed_packages);
