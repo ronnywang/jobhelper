@@ -1,17 +1,45 @@
-var main = function(){
+var get_company_info = function(){
     var params = {};
     params.link = document.location.href;
 
     if ('www.104.com.tw' == document.location.hostname) {
 	// 有 jQuery 可以用
-
 	var company_dom = jQuery('#comp_header li.comp_name p a', document);
-	if (company_dom.length == 0) {
-	    return;
+	if (company_dom.length != 0) {
+	    params.from = '104';
+	    params.name = company_dom.eq(0).text();
+	    params.company_link = company_dom.eq(0).attr('href');
+	    return params;
 	}
-	params.from = '104';
-	params.name = company_dom.eq(0).text();
-	params.company_link = company_dom.eq(0).attr('href');
+
+	company_dom = jQuery('#comp_header li.comp_name h1', document);
+	if (company_dom.length != 0) {
+	    params.from = '104';
+	    params.name = company_dom.text();
+	    params.company_link = document.location;
+	    return params;
+	}
+	
+	return;
+    } else if ('www.104temp.com.tw' == document.location.hostname) {
+	// 檢查所有 a dom, 如果 company_intro.jsp 開頭的不超過兩個不一樣的，就確定是這家公司了
+	var a_doms = $('a', document);
+	var a_dom;
+	for (var i = 0; i < a_doms.length; i ++) {
+	    a_dom = a_doms.eq(i);
+	    if (!a_dom.attr('href') || !a_dom.attr('href').match(/^company_intro\.jsp/)) {
+		continue;
+	    }
+	    if (params.company_link && params.company_link != a_dom.attr('href')) {
+		// 有兩家不一樣的公司，跳過
+		return;
+	    }
+	    params.company_link = a_dom.attr('href');
+	    params.name = a_dom.text();
+	    params.from = '104temp';
+	}
+
+	return params;
     } else if ('www.yes123.com.tw' == document.location.hostname) {
 	if (!jQuery('.comp_name').length) {
 	    return;
@@ -53,9 +81,35 @@ var main = function(){
 	return;
     }
 
-    jQuery.get('http://jobhelper.g0v.ronny.tw/index/info?info=' + encodeURIComponent(JSON.stringify(params)), function(ret){
-	chrome.extension.sendRequest(ret, function(response) {});
-    }, 'json');
+    return params;
+};
+
+var main = function(){
+    // TODO: 只有特定網站才要 sendRequest 來顯示 page action
+    chrome.extension.sendRequest({method: 'page'}, function(response){});
+
+    var params = get_company_info();
+
+    if ('object' == typeof(params) && 'undefined' !== typeof(params.name)) {
+	get_package_info(function(package_info){
+	    get_choosed_packages(function(choosed_packages){
+		for (var id in choosed_packages) {
+		    get_package_csv_by_id(id, function(package_csv){
+			if ('undefined' == typeof(package_csv)) {
+			    return;
+			}
+			var rows;
+			for (var i = 0; i < package_csv.length; i ++) {
+			    rows = package_csv[i];
+			    if (params.name.indexOf(rows[0]) >= 0) {
+				chrome.extension.sendRequest({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, id)}, function(response) {});
+			    }
+			}
+		    });
+		}
+	    });
+	});
+    }
 };
 
 main();

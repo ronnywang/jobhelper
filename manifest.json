@@ -3,7 +3,7 @@
 
   "name": "求職小幫手",
   "description": "讓你更加了解這家公司",
-  "version": "1.0",
+  "version": "1.1",
 
   "background" : {
       "scripts": ["background.js"]
@@ -11,20 +11,28 @@
   "permissions": [
       "http://jobhelper.g0v.ronny.tw/",
       "http://www.104.com.tw/",
+      "http://www.104temp.com.tw/",
       "http://www.1111.com.tw/",
       "http://www.yes123.com.tw/",
       "http://www.518.com.tw/",
-      "tabs"
+      "tabs",
+      "storage"
   ],
+  "page_action" : {
+      "default_icon" : "icon-19.png",
+      "default_title" : "設定求職小幫手",
+      "default_popup" : "popup.html"
+  },
   "content_scripts" : [
     {
       "matches" : [
         "http://www.104.com.tw/*",
+        "http://www.104temp.com.tw/*",
 	"http://www.1111.com.tw/*",
 	"http://www.yes123.com.tw/*",
 	"http://www.518.com.tw/*"
       ],
-      "js" : ["jquery.min.js", "contentscript.js"],
+      "js" : ["jquery.min.js", "common.js", "contentscript.js"],
       "run_at" : "document_idle",
       "all_frames" : false
     }
