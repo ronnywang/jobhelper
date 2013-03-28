@@ -1,4 +1,4 @@
-var package_info = null;
+var _package_info = null;
 var _choosed_packages = null;
 
 var update_choosed_packages = function(choosed_packages){
@@ -17,8 +17,8 @@ var get_choosed_packages = function(cb){
 };
 
 var get_package_info = function(cb){
-    if (null !== package_info) {
-        cb(package_info);
+    if (null !== _package_info) {
+        cb(_package_info);
     }
 
     chrome.storage.local.get({packages: {}}, function(items){
