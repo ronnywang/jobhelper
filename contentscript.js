@@ -4,14 +4,23 @@ var get_company_info = function(){
 
     if ('www.104.com.tw' == document.location.hostname) {
 	// 有 jQuery 可以用
-
 	var company_dom = jQuery('#comp_header li.comp_name p a', document);
-	if (company_dom.length == 0) {
-	    return;
+	if (company_dom.length != 0) {
+	    params.from = '104';
+	    params.name = company_dom.eq(0).text();
+	    params.company_link = company_dom.eq(0).attr('href');
+	    return params;
 	}
-	params.from = '104';
-	params.name = company_dom.eq(0).text();
-	params.company_link = company_dom.eq(0).attr('href');
+
+	company_dom = jQuery('#comp_header li.comp_name h1', document);
+	if (company_dom.length != 0) {
+	    params.from = '104';
+	    params.name = company_dom.text();
+	    params.company_link = document.location;
+	    return params;
+	}
+	
+	return;
     } else if ('www.yes123.com.tw' == document.location.hostname) {
 	if (!jQuery('.comp_name').length) {
 	    return;
