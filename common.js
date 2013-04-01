@@ -9,6 +9,7 @@ var update_choosed_packages = function(choosed_packages){
 var get_choosed_packages = function(cb){
     if (null !== _choosed_packages) {
         cb(_choosed_packages);
+        return;
     } 
     chrome.storage.local.get({choosed_packages: null}, function(items){
 	if (null === items.choosed_packages) {
