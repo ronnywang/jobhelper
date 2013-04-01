@@ -109,7 +109,7 @@ var main = function(){
                             var rows;
                             for (var i = 0; i < package_csv.length; i ++) {
                                 rows = package_csv[i];
-                                if (params.name.indexOf(rows[0]) >= 0) {
+                                if (check_name(params.name, rows[0])) {
                                     chrome.extension.sendRequest({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, id)}, function(response) {});
                                 }
                             }

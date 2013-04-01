@@ -79,3 +79,21 @@ var get_package_csv_by_id = function(id, cb){
         });
     });
 };
+
+var check_name = function(web_name, db_name){
+    if ('string' !== typeof(db_name)) {
+        return false;
+    }
+    // 先比對一次
+    if (web_name.indexOf(db_name) >= 0) {
+        return true;
+    }
+
+    // 如果不是 "公司" 結尾的(Ex: 宏達國際電子股份有限公司桃園廠), 只判斷到公司
+    if (db_name.match('公司') && !db_name.match('公司$')) {
+        if (web_name.indexOf(db_name.match('(^.*公司)')[1]) >= 0) {
+            return true;
+        }
+    }
+    return false;
+};
