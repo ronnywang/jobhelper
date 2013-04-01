@@ -1,31 +1,27 @@
 var _choosed_packages = null;
 
 var update_choosed_packages = function(choosed_packages){
-    _choosed_packages = choosed_packages;
     chrome.storage.local.set({choosed_packages: choosed_packages});
 };
 
 var get_choosed_packages = function(cb){
-    if (null !== _choosed_packages) {
-        cb(_choosed_packages);
-        return;
-    } 
-    chrome.storage.local.get({choosed_packages: null}, function(items){
-	if (null === items.choosed_packages) {
-	    get_package_info(function(package_info){
-		var choosed_packages = {};
-		for (var i = 0; i < package_info.packages.length; i ++) {
-		    if (package_info.packages[i].default) {
-			choosed_packages[package_info.packages[i].id] = true;
-		    }
-		}
-		update_choosed_packages(choosed_packages);
-		cb(choosed_packages);
-	    });
-	    return;
-	}
-        _choosed_packages = items.choosed_packages;
-        cb(items.choosed_packages);
+    chrome.storage.local.get({choosed_packages: {}}, function(items){
+        get_package_info(function(package_info){
+            var choosed_packages = {};
+            var current_package = null;
+            for (var i = 0; i < package_info.packages.length; i ++) {
+                current_package = package_info.packages[i];
+                if ('undefined' === typeof(items.choosed_packages[current_package.id])) {
+                    if (current_package) {
+                        choosed_packages[current_package.id] = true;
+                    }
+                } else if (false === items.choosed_packages[current_package.id]) {
+                } else {
+                    choosed_packages[current_package.id] = true;
+                }
+            }
+            cb(choosed_packages);
+        });
     });
 };
 

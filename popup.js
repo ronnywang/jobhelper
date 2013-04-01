@@ -32,7 +32,7 @@ $('#package-list').on('change', 'li input:checkbox', function(){
         if (self.is(':checked')) {
             choosed_packages[self.attr('value')] = true;
         } else {
-            delete(choosed_packages[self.attr('value')]);
+            choosed_packages[self.attr('value')] = false;
         }
         update_choosed_packages(choosed_packages);
     });
