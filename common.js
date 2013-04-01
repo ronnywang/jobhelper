@@ -95,5 +95,12 @@ var check_name = function(web_name, db_name){
             return true;
         }
     }
+
+    // 處理 "吳美玉(即玉皇手作茶飲店)" 格式
+    if (db_name.match('.*\\(即.*\\)')) {
+        if (web_name.indexOf(db_name.match('.*\\(即(.*)\\)')[1]) >= 0) {
+            return true;
+        }
+    }
     return false;
 };
