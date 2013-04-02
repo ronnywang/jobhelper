@@ -102,5 +102,12 @@ var check_name = function(web_name, db_name){
             return true;
         }
     }
+
+    // 處理 高雄市私立新東海老人養護中心
+    if (db_name.match('.*私立(.*)')) {
+        if (web_name.indexOf(db_name.match('.*私立(.*)')[1]) >= 0) {
+            return true;
+        }
+    }
     return false;
 };
