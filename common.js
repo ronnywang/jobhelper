@@ -50,6 +50,7 @@ var _package_csv = null;
 var get_package_csv_from_storage = function(cb){
     if (null !== _package_csv) {
         cb(_package_csv);
+	return;
     }
     chrome.storage.local.get({package_csv: {}}, function(items){
         _package_csv = items.package_csv;
