@@ -112,3 +112,32 @@ var check_name = function(web_name, db_name){
     }
     return false;
 };
+
+var search_name = function(name, cb){
+    get_choosed_packages(function(choosed_packages){
+	for (var id in choosed_packages) {
+	    (function(id){
+		get_package_csv_by_id(id, function(package_csv){
+		    if ('undefined' == typeof(package_csv)) {
+			return;
+		    }
+		    var rows;
+		    for (var i = 0; i < package_csv.length; i ++) {
+			rows = package_csv[i];
+			if (rows[0].indexOf(name) >= 0) {
+			    cb(id, rows);
+			}
+		    }
+		});
+	    })(id);
+	}
+    });
+};
+
+var htmlspecialchars = function(str){
+    var span_dom = document.createElement('span');
+    span_dom.innerText = str;
+    str = span_dom.innerHTML;
+    delete(span_dom);
+    return str;
+};
