@@ -5,18 +5,33 @@
 	<title>求職小幫手設定</title>
 	<script src="jquery.min.js"></script>
 	<script src="bootstrap.min.js"></script>
+        <script src="common.js"></script>
 	<link rel="stylesheet" href="bootstrap.css">
     </head><!doctype html>
     <body style="width: 300px">
-	<script type="text/html" id="li-tmpl">
-	    <li><label><input type="checkbox" name="package_id[]" value=""><span class="package_name"></span></label></li>
-	</script>
-	列表抓取時間: <span id="package-fetch-at"></span><button id="fetch-package-btn">更新</button>
-	<br>
-	選取需要的資料包:
-	<ul id="package-list">
-	</ul>
-        <script src="common.js"></script>
+	<div class="navbar">
+	    <div class="navbar-inner">
+		<ul class="nav">
+		    <li class="nav-switch active" id="nav-package"><a href="#">資料包管理</a></li>
+		    <li class="nav-switch" id="nav-company"><a href="#">搜尋公司</a></li>
+		</ul>
+	    </div>
+	</div>
+	<div class="div-nav" id="div-package">
+	    <script type="text/html" id="li-tmpl">
+		<li><label><input type="checkbox" name="package_id[]" value=""><span class="package_name"></span></label></li>
+	    </script>
+	    列表抓取時間: <span id="package-fetch-at"></span><button id="fetch-package-btn">更新</button>
+	    <br>
+	    選取需要的資料包:
+	    <ul id="package-list">
+	    </ul>
+	</div>
+	<div class="div-nav" id="div-company" style="display:none">
+	    搜尋: <input type="text" id="search-word">
+	    <ol id="search-list">
+	    </ol>
+	</div>
 	<script src="popup.js"></script>
     </body>
 </html>
