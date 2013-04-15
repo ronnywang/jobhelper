@@ -11,6 +11,8 @@
   "permissions": [
       "http://jobhelper.g0v.ronny.tw/",
       "http://www.104.com.tw/",
+      "http://www.ejob.gov.tw/",
+      "https://www.ejob.gov.tw/",
       "http://www.104temp.com.tw/",
       "http://www.1111.com.tw/",
       "http://www.yes123.com.tw/",
@@ -27,6 +29,8 @@
     {
       "matches" : [
         "http://www.104.com.tw/*",
+        "http://www.ejob.gov.tw/*",
+        "https://www.ejob.gov.tw/*",
         "http://www.104temp.com.tw/*",
 	"http://www.1111.com.tw/*",
 	"http://www.yes123.com.tw/*",

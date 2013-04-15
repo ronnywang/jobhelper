@@ -21,6 +21,13 @@ var get_company_info = function(){
 	}
 	
 	return;
+    } else if ('www.ejob.gov.tw' == document.location.hostname) {
+	var company_dom = jQuery('#ctl00_ContentPlaceHolder1_lblCompName', document);
+	if (company_dom.length != 0) {
+	    params.from = 'ejob';
+	    params.name = company_dom.text();
+	    return params;
+	}
     } else if ('www.104temp.com.tw' == document.location.hostname) {
 	// 檢查所有 a dom, 如果 company_intro.jsp 開頭的不超過兩個不一樣的，就確定是這家公司了
 	var a_doms = $('a', document);
