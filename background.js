@@ -28,7 +28,7 @@ var popup_function = function(rows, package_info){
     info_dom.style.color = 'black';
     document.getElementById('CompanyInfoMessage').innerHTML += '<li>'
 	+ htmlspecialchars(rows[1]) + '. ' + htmlspecialchars(rows[2])
-	+ '[<a href="' + htmlspecialchars(package_info.url) + '" target="_blank">' + htmlspecialchars(package_info.name) + '</a>]'
+	+ '[<a href="' + htmlspecialchars(package_info.url + '#company-' + rows[0] + '-' + rows[1]) + '" target="_blank">' + htmlspecialchars(package_info.name) + '</a>]'
 	+ '</li>';
 };
 
