@@ -75,6 +75,7 @@ var get_package_csv_by_id = function(id, cb){
             }
             $.get('http://jobhelper.g0v.ronny.tw/api/getpackage?id=' + parseInt(id), function(package_csv){
                 _package_csv[id] = package_csv;
+		chrome.storage.local.set({package_csv: _package_csv});
                 cb(_package_csv[id].content);
             });
         });
