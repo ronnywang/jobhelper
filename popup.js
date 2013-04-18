@@ -58,7 +58,7 @@ $('#search-word').keyup(function(e){
 
     search_serial ++;
     (function(current_search_serial){
-	search_name(name, function(package_id, package_row){
+	search_package_by_name(name, function(package_id, package_row){
 	    get_package_info(function(package_info){
 		if (search_serial != current_search_serial) {
 		    return;
@@ -70,6 +70,8 @@ $('#search-word').keyup(function(e){
 		+ '[<a href="' + htmlspecialchars(package_info.url) + '" target="_blank">' + htmlspecialchars(package_info.name) + '</a>]'
 		+ '</li>';
 	    });
-	});
+	}, function(web_name, db_name){
+            return db_name.indexOf(web_name) > 0;
+        });
     })(search_serial);
 });
