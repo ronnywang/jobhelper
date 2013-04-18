@@ -1,6 +1,6 @@
 var popup_function = function(rows, package_info){
     if (!document.getElementById('CompanyInfo')) {
-	var content = "<div id='CompanyInfo' style='background: #cc103f; bottom: 0; padding: 5px; text-align: center; z-index: 99999; font-size: 14.5px; line-height: 1.5; color: #fff; position: fixed'>"
+	var content = "<div id='CompanyInfo' style='max-height: 20%; overflow-y: scroll; background: #cc103f; bottom: 0; padding: 5px; text-align: left; z-index: 99999; font-size: 14.5px; line-height: 1.5; color: #fff; position: fixed'>"
 	    + "<ol id='CompanyInfoMessage'></ol>"
 	    + "<div style='color:#fff;font-weight:bold;float:right;padding-right:8px;width:46px;'>"
 	    + "<span id='CompanyInfoClose' style='cursor:pointer;'>&times;</div>"                
