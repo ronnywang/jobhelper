@@ -26,10 +26,19 @@ var popup_function = function(rows, package_info){
     var info_dom = document.getElementById('CompanyInfo');
     info_dom.style.background = 'yellow';
     info_dom.style.color = 'black';
-    document.getElementById('CompanyInfoMessage').innerHTML += '<li>'
-	+ htmlspecialchars(rows[1]) + '. ' + htmlspecialchars(rows[2])
-	+ '[<a href="' + htmlspecialchars(package_info.url + '#company-' + rows[0] + '-' + rows[1]) + '" target="_blank">' + htmlspecialchars(package_info.name) + '</a>]'
-	+ '</li>';
+    var content = '';
+    content += '<li>';
+    content += htmlspecialchars(rows[1]) + '. ' + htmlspecialchars(rows[2]);
+    if (rows[3]) {
+        content += '[<a href="' + htmlspecialchars(rows[3]) + '" target="_blank">原始連結</a>]';
+    }
+    if (rows[4]) {
+        content += '[<a href="' + htmlspecialchars(rows[4]) + '" target="_blank">截圖</a>]';
+    }
+    content += '[資料包: <a href="' + htmlspecialchars(package_info.url + '#company-' + rows[0] + '-' + rows[1]) + '" target="_blank">' + htmlspecialchars(package_info.name) + '</a>]';
+    content += '</li>';
+
+    document.getElementById('CompanyInfoMessage').innerHTML += content;
 };
 
 
