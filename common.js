@@ -114,7 +114,7 @@ var check_name = function(web_name, db_name){
     return false;
 };
 
-var search_name = function(name, cb){
+var search_package_by_name = function(name, cb, checker){
     get_choosed_packages(function(choosed_packages){
 	for (var id in choosed_packages) {
 	    (function(id){
@@ -125,7 +125,7 @@ var search_name = function(name, cb){
 		    var rows;
 		    for (var i = 0; i < package_csv.length; i ++) {
 			rows = package_csv[i];
-			if (rows[0].indexOf(name) >= 0) {
+			if (checker(name, rows[0])) {
 			    cb(id, rows);
 			}
 		    }
