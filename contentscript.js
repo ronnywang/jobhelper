@@ -105,26 +105,11 @@ var main = function(){
     var params = get_company_info();
 
     if ('object' == typeof(params) && 'undefined' !== typeof(params.name)) {
-	get_package_info(function(package_info){
-	    get_choosed_packages(function(choosed_packages){
-		for (var id in choosed_packages) {
-                    (function(id){
-                        get_package_csv_by_id(id, function(package_csv){
-                            if ('undefined' == typeof(package_csv)) {
-                                return;
-                            }
-                            var rows;
-                            for (var i = 0; i < package_csv.length; i ++) {
-                                rows = package_csv[i];
-                                if (check_name(params.name, rows[0])) {
-                                    chrome.extension.sendRequest({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, id)}, function(response) {});
-                                }
-                            }
-                        });
-                    }(id))
-		}
-	    });
-	});
+        search_package_by_name(params.name, function(package_id, rows){
+            get_package_info(function(package_info){
+                chrome.extension.sendRequest({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, package_id)}, function(response) {});
+            });
+        }, check_name);
     }
 };
 
