@@ -83,6 +83,11 @@ var get_company_info = function(){
 	}
     } else if ('www.518.com.tw' == document.location.hostname) {
         if (jQuery('#company-title').length) {
+            if (jQuery('#company-title .sTrong').length == 1) {
+                params.from = '518';
+                params.name = jQuery('#company-title .sTrong')[0].childNodes[0].nodeValue.replace(' ', '');
+                return params;
+            }
             params.from = '518';
             params.name = jQuery('#company-title').text().replace('所有工作機會»', '').replace(' ', '');
             params.company_link = document.location.href;
