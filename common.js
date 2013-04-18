@@ -135,6 +135,26 @@ var search_package_by_name = function(name, cb, checker){
     });
 };
 
+var search_package_by_name_api = function(name, url, cb){
+    get_choosed_packages(function(choosed_packages){
+        var packages = [];
+        for (var id in choosed_packages) {
+            packages.push(id);
+        }
+        $.get('http://jobhelper.g0v.ronny.tw/api/search?name=' + encodeURIComponent(name) + '&url=' + encodeURIComponent(url) + '&packages=' + encodeURIComponent(packages.join(',')), function(ret){
+            if (ret.error) {
+                console.log('Error: ' + ret.message);
+                return;
+            }
+            var d;
+            for (var i = 0; i < ret.data.length; i ++) {
+                d = ret.data[i];
+                cb(d.package_id, [d.name, d.date, d.reason, d.link, d.snapshot]);
+            }
+        }, 'json');
+    });
+};
+
 var htmlspecialchars = function(str){
     var span_dom = document.createElement('span');
     span_dom.innerText = str;
