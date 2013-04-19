@@ -47,7 +47,7 @@ var get_company_info = function(){
 	}
 
 	return params;
-    } else if ('www.yes123.com.tw' == document.location.hostname) {
+    } else if ('www.yes123.com.tw' == document.location.hostname||'yes123.com.tw' == document.location.hostname) {
 	if (!jQuery('.comp_name').length) {
             // 處理小而美企業頁面
             if (jQuery('.dtitle').length == 1 && document.location.href.match('small_corp')) {
