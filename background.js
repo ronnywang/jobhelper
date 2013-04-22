@@ -24,6 +24,9 @@ var popup_function = function(rows, package_info){
 	content += '<li>';
 	content += '<a href="' + htmlspecialchars(package_info.url) + '" target="_blank">' + htmlspecialchars(package_info.name) + '</a>';
 	content += '(共 <span id="CompanyInfo-PackageCount-' + package_info.id + '">1</span> 筆符合)';
+	if (package_info.notice) {
+	    content += '<a style="color: red" href="#" onclick="alert(this.title); return false;" title="' + htmlspecialchars(package_info.notice) + '">[注意!]</a>';
+	}
 	content += '<ol style="list-style-type: decimal" id="CompanyInfo-Package-' + package_info.id +'"></ol>';
 	content += '</li>';
 	document.getElementById('CompanyInfoMessage').innerHTML += content;
