@@ -8,6 +8,10 @@ var show_packages = function(packages){
         for (var i = 0; i < packages.packages.length; i ++) {
             var li_dom = $($('#li-tmpl').html());
             $('input:checkbox', li_dom).attr('value', packages.packages[i].id);
+	    if (packages.packages[i].notice) {
+		$('input:checkbox', li_dom).data('notice', packages.packages[i].notice);
+	    }
+	    
             if ('undefined' !== typeof(choosed_packages[packages.packages[i].id])) {
                 $('input:checkbox', li_dom).prop('checked', true);
             }
@@ -31,8 +35,17 @@ $('#package-list').on('change', 'li input:checkbox', function(){
     get_choosed_packages(function(choosed_packages){
         if (self.is(':checked')) {
             choosed_packages[self.attr('value')] = true;
+	    if (self.data('notice')) {
+		// 顯示此資料包提示訊息
+		self.parents('li').append($('<div></div>').addClass('alert').addClass('alert-info').text(self.data('notice')));
+		var div_dom = self.parents('li').find('div.alert');
+		if (div_dom.offset().top + div_dom.height() > $(window).height() + $(window).scrollTop()) {
+		    $(window).scrollTop(div_dom.offset().top + div_dom.height() - $(window).height() + 50);
+		}
+	    }
         } else {
             choosed_packages[self.attr('value')] = false;
+	    self.parents('li').find('div.alert').remove();
         }
         update_choosed_packages(choosed_packages);
     });
