@@ -19,6 +19,40 @@ var get_company_info = function(){
 	    params.company_link = document.location;
 	    return params;
 	}
+
+	// 104i
+	if (document.location.pathname.match('\/104i\/')) {
+	    // 單一公司頁，只有一個 <h1>, Ex: http://www.104.com.tw/jb/104i/cust/view?c=5e3a43255e363e2048323c1d1d1d1d5f2443a363189j01
+	    if (document.location.pathname.match('/cust/view')) {
+		var h1_dom = jQuery('#mainHeader h1.h1');
+		if (h1_dom.length == 1) {
+		    params.from = '104';
+		    params.name = h1_dom.text();
+		    return params;
+		}
+	    }
+
+	    // 工作頁
+	    if (document.location.pathname.match('/job/view')) {
+		var a_doms = $('#mainHeader a', document);
+		var a_dom;
+		for (var i = 0; i < a_doms.length; i ++) {
+		    a_dom = a_doms.eq(i);
+		    if (!a_dom.attr('href') || !a_dom.attr('href').match(/view\?c=/)) {
+			continue;
+		    }
+		    if (params.company_link && params.company_link != a_dom.attr('href')) {
+			// 有兩家不一樣的公司，跳過
+			return;
+		    }
+		    params.company_link = a_dom.attr('href');
+		    params.name = a_dom.text();
+		    params.from = '104';
+		}
+	    }
+
+	    return params;
+	}
 	
 	return;
     } else if ('www.ejob.gov.tw' == document.location.hostname) {
