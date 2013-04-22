@@ -12,7 +12,8 @@ var get_choosed_packages = function(cb){
             for (var i = 0; i < package_info.packages.length; i ++) {
                 current_package = package_info.packages[i];
                 if ('undefined' === typeof(items.choosed_packages[current_package.id])) {
-                    if (current_package) {
+		    // 有指定 default=true 才會變成預設包
+                    if (current_package && current_package['default']) {
                         choosed_packages[current_package.id] = true;
                     }
                 } else if (false === items.choosed_packages[current_package.id]) {
