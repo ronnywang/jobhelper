@@ -37,7 +37,7 @@ var popup_function = function(rows, package_info){
     content += '<li>';
     content += htmlspecialchars(rows[1]) + '. ' + htmlspecialchars(rows[2]);
     if (rows[3]) {
-        content += '[<a href="' + htmlspecialchars(rows[3]) + '" target="_blank">原始連結</a>]';
+        content += '[<a href="' + htmlspecialchars(rows[3]) + (rows[3].indexOf('?') >= 0 ? '&' : '?') + 'utm_source=jobhelper&utm_medium=web&utm_campaign=corp" target="_blank">原始連結</a>]';
     }
     if (rows[4]) {
         content += '[<a href="' + htmlspecialchars(rows[4]) + '" target="_blank">截圖</a>]';
