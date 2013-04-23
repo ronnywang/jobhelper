@@ -150,12 +150,17 @@ var main = function(){
     var params = get_company_info();
 
     if ('object' == typeof(params) && 'undefined' !== typeof(params.name)) {
-        //search_package_by_name(params.name, function(package_id, rows){
         search_package_by_name_api(params.name, params.link, function(package_id, rows){
             get_package_info(function(package_info){
                 chrome.extension.sendRequest({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, package_id)}, function(response) {});
             });
-        }, check_name);
+        }, function(error_message){
+            search_package_by_name(params.name, function(package_id, rows){
+                get_package_info(function(package_info){
+                    chrome.extension.sendRequest({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, package_id)}, function(response) {});
+                });
+            }, check_name);
+        });
     }
 };
 
