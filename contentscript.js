@@ -112,9 +112,22 @@ var get_company_info = function(){
 		return false;
 	    }
 	});
-	if (!found) {
-	    return;
+	if (found) {
+	    return params;
 	}
+
+        var decoded_url = decodeURIComponent(document.location.href);
+        // 網址中有「找工作」和「找工作機會」都可以
+        if (decoded_url.match('http://www.1111.com.tw/.*-找工作(機會)?-[0-9]*\.htm')) {
+            var h1_doms = jQuery('h1');
+            if (h1_doms.length == 1) {
+                params.from = '1111';
+                params.name = h1_doms.text();
+                return params;
+            }
+        }
+
+        return;
     } else if ('www.518.com.tw' == document.location.hostname) {
         if (jQuery('#company-title').length) {
             if (jQuery('#company-title .sTrong').length == 1) {
