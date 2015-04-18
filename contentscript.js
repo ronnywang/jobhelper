@@ -125,6 +125,21 @@ var get_company_info = function(){
 	    return params;
 	}
 
+	jQuery('div.path a').each(function(){
+	    var self = $(this);
+
+	    if (self.attr('href').match(/找工作機會/)) {
+		params.from = '1111';
+		params.name = self.text();
+		params.company_link = self.attr('href');
+		found = true;
+		return false;
+	    }
+	});
+	if (found) {
+	    return params;
+	}
+
         var decoded_url = decodeURIComponent(document.location.href);
         // 網址中有「找工作」和「找工作機會」都可以
         if (decoded_url.match('http://www.1111.com.tw/.*-找工作(機會)?-[0-9]*\.htm')) {
@@ -139,6 +154,11 @@ var get_company_info = function(){
         return;
     } else if ('www.518.com.tw' == document.location.hostname) {
         if (jQuery('#company-title').length) {
+            if (jQuery('#company-title .comp-name').length == 1) {
+                params.from = '518';
+                params.name = jQuery('#company-title .comp-name').text();
+                return params;
+            }
             if (jQuery('#company-title .sTrong').length == 1) {
                 params.from = '518';
                 params.name = jQuery('#company-title .sTrong')[0].childNodes[0].nodeValue.replace(' ', '');
