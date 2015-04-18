@@ -20,6 +20,15 @@ var get_company_info = function(){
 	    return params;
 	}
 
+    // http://www.104.com.tw/job/?jobno=3lluq&jobsource=n104bank1
+	company_dom = jQuery('span.company a:first', document);
+	if (company_dom.length != 0) {
+	    params.from = '104';
+	    params.name = company_dom.eq(0).text();
+	    params.company_link = company_dom.eq(0).attr('href');
+	    return params;
+	}
+
 	// 104i
 	if (document.location.pathname.match('\/104i\/')) {
 	    // 單一公司頁，只有一個 <h1>, Ex: http://www.104.com.tw/jb/104i/cust/view?c=5e3a43255e363e2048323c1d1d1d1d5f2443a363189j01
