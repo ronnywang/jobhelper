@@ -11,6 +11,7 @@
   "permissions": [
       "http://jobhelper.g0v.ronny.tw/",
       "https://jobhelper.g0v.ronny.tw/",
+      "http://www.taiwanjobs.gov.tw/",
       "http://www.104.com.tw/",
       "https://www.104.com.tw/",
       "http://www.ejob.gov.tw/",
@@ -33,6 +34,7 @@
       "matches" : [
         "http://www.104.com.tw/*",
         "https://www.104.com.tw/*",
+        "http://www.taiwanjobs.gov.tw/*",
         "http://www.ejob.gov.tw/*",
         "https://www.ejob.gov.tw/*",
         "http://www.104temp.com.tw/*",
