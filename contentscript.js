@@ -110,6 +110,28 @@ var get_company_info = function(){
 	params.company_link = matches[1];
     } else if ('www.1111.com.tw' == document.location.hostname) {
 	var found = false;
+
+        // check HTML   <li><a href="/job-bank/company-description.asp?nNo=2765266"></a></li>
+        jQuery('#commonTop li a').each(function(){
+            var href = $(this).attr('href');
+            if ('string' == typeof(href) && href.match('/job-bank/company-description\.asp\\?nNo=[^&]*')) {
+                params.from = '1111';
+		params.name = $(this).text();
+		params.company_link = $(this).attr('href');
+		found = true;
+		return false;
+            }
+        });
+	if (found) {
+	    return params;
+	}
+
+        if ('object' === typeof(vizLayer) && 'string' === typeof(vizLayer.catname)) {
+            params.from = '1111';
+            params.name = vizLayer.catname;
+            params.company_link = '#';
+            return params;
+        }
 	jQuery('#breadcrumb li a').each(function(){
 	    var self = $(this);
 
