@@ -175,6 +175,13 @@ var get_company_info = function(){
 
         return;
     } else if ('www.518.com.tw' == document.location.hostname) {
+        if (jQuery('.company-info h3 a').length) {
+            var dom = $('.company-info h3 a');
+            params.from = '518';
+            params.name = dom.text();
+            return params;
+        }
+
         if (jQuery('#company-title').length) {
             if (jQuery('#company-title .comp-name').length == 1) {
                 params.from = '518';
