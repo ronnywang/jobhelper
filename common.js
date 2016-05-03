@@ -38,7 +38,7 @@ var get_package_info = function(cb){
 };
 
 var update_packages = function(cb){
-    $.get('http://jobhelper.g0v.ronny.tw/api/getpackages', function(ret){
+    $.get('https://jobhelper.g0v.ronny.tw/api/getpackages', function(ret){
         ret.fetch_at = (new Date()).getTime();
         chrome.storage.local.set({packages: ret}, function(){
             cb(ret);
@@ -74,7 +74,7 @@ var get_package_csv_by_id = function(id, cb){
                 cb(package_csv[id].content);
                 return;
             }
-            $.get('http://jobhelper.g0v.ronny.tw/api/getpackage?id=' + parseInt(id), function(package_csv){
+            $.get('https://jobhelper.g0v.ronny.tw/api/getpackage?id=' + parseInt(id), function(package_csv){
                 _package_csv[id] = package_csv;
 		chrome.storage.local.set({package_csv: _package_csv});
                 cb(_package_csv[id].content);
@@ -142,7 +142,7 @@ var search_package_by_name_api = function(name, url, cb, failed_cb){
         for (var id in choosed_packages) {
             packages.push(id);
         }
-        $.get('http://jobhelper.g0v.ronny.tw/api/search?name=' + encodeURIComponent(name) + '&url=' + encodeURIComponent(url) + '&packages=' + encodeURIComponent(packages.join(',')), function(ret){
+        $.get('https://jobhelper.g0v.ronny.tw/api/search?name=' + encodeURIComponent(name) + '&url=' + encodeURIComponent(url) + '&packages=' + encodeURIComponent(packages.join(',')), function(ret){
             if (ret.error) {
                 failed_cb(ret.message);
                 return;
