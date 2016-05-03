@@ -17,6 +17,7 @@
       "https://www.ejob.gov.tw/",
       "http://www.104temp.com.tw/",
       "http://www.1111.com.tw/",
+      "https://www.1111.com.tw/",
       "http://www.yes123.com.tw/",
       "http://www.518.com.tw/",
       "tabs",
@@ -36,6 +37,7 @@
         "https://www.ejob.gov.tw/*",
         "http://www.104temp.com.tw/*",
 	"http://www.1111.com.tw/*",
+	"https://www.1111.com.tw/*",
 	"http://www.yes123.com.tw/*",
 	"http://www.518.com.tw/*"
       ],
