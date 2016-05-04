@@ -64,8 +64,8 @@ var get_company_info = function(){
 	}
 	
 	return;
-    } else if ('www.ejob.gov.tw' == document.location.hostname) {
-	var company_dom = jQuery('#ctl00_ContentPlaceHolder1_lblCompName', document);
+    } else if ('www.taiwanjobs.gov.tw' == document.location.hostname) {
+	var company_dom = jQuery('#divcontent span:first',document);
 	if (company_dom.length != 0) {
 	    params.from = 'ejob';
 	    params.name = company_dom.text();
