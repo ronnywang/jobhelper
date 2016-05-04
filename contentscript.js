@@ -68,7 +68,7 @@ var get_company_info = function(){
 	var company_dom = jQuery('#divcontent span:first',document);
 	if (company_dom.length != 0) {
 	    params.from = 'ejob';
-	    params.name = company_dom.text();
+	    params.name = company_dom.text().trim();
 	    return params;
 	}
     } else if ('www.104temp.com.tw' == document.location.hostname) {
