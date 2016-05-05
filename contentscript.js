@@ -108,6 +108,7 @@ var get_company_info = function(){
 	params.from = 'yes123';
 	params.name = jQuery('.jobname_title a:first').text();
 	params.company_link = matches[1];
+	return params;
     } else if ('www.1111.com.tw' == document.location.hostname) {
 	var found = false;
 
