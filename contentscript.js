@@ -91,22 +91,25 @@ var get_company_info = function(){
 
 	return params;
     } else if ('www.yes123.com.tw' == document.location.hostname||'yes123.com.tw' == document.location.hostname) {
-	if (!jQuery('.comp_name').length) {
             // 處理小而美企業頁面
-            if (jQuery('.dtitle').length == 1 && document.location.href.match('small_corp')) {
-                params.from = 'yes123';
-                params.name = jQuery('.dtitle').text();
-                return params;
-            }
-	    return;
-	}
+        if (jQuery('.dtitle').length == 1 && document.location.href.match('small_corp')) {
+            params.from = 'yes123';
+            params.name = jQuery('.dtitle').text();
+            return params;
+        }
+            
 	var matches = document.location.search.match(/p_id=([^&]*)/);
 	if (!matches) {
 	    return;
 	}
+	
+	if (jQuery('.company_title').length==1) {
+		params.name = jQuery('.company_title').text();
+	}else if (jQuery('.jobname_title a:first').length==1) {
+		params.name = jQuery('.jobname_title a:first').text();
+	}
 
 	params.from = 'yes123';
-	params.name = jQuery('.jobname_title a:first').text();
 	params.company_link = matches[1];
 	return params;
     } else if ('www.1111.com.tw' == document.location.hostname) {
