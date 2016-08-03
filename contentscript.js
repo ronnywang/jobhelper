@@ -2,7 +2,7 @@ var get_company_info = function(){
     var params = {};
     params.link = document.location.href;
 
-    if ('www.104.com.tw' == document.location.hostname) {
+    if ('www.104.com.tw' == document.location.hostname || '104.com.tw' == document.location.hostname) {
         // 有 jQuery 可以用
         var company_dom = jQuery('#comp_header li.comp_name p a', document);
         if (company_dom.length != 0) {
@@ -61,6 +61,30 @@ var get_company_info = function(){
             }
 
             return params;
+        }
+        
+        return;
+    } else if ('m.104.com.tw' == document.location.hostname) {
+        // 有 jQuery 可以用
+        if (document.location.pathname.match('\/cust\/')) {
+            company_dom = jQuery('header h1.title', document);
+            if (company_dom.length != 0) {
+                params.from = '104-2';
+                params.name = company_dom.text();
+                params.company_link = document.location;
+                return params;
+            }
+        }
+        
+        if (document.location.pathname.match('\/job\/')) {
+            // http://m.104.com.tw/job/3lluq
+            company_dom = jQuery('h2.company a:first', document);
+            if (company_dom.length != 0) {
+                params.from = '104-3';
+                params.name = company_dom.eq(0).text();
+                params.company_link = company_dom.eq(0).attr('href');
+                return params;
+            }
         }
         
         return;
@@ -131,6 +155,18 @@ var get_company_info = function(){
             return params;
         }
 
+        var company_dom = jQuery('#jobcontent ul li h2', document);
+        if (company_dom.length != 0) {
+            params.from = '1111-1';
+            params.name = company_dom.eq(0).text();
+            
+            company_dom = jQuery('#companyDescription', document);
+            if (company_dom.length != 0) {
+                params.company_link = company_dom.eq(0).attr('href');
+            }
+            return params;
+        }
+        
         if ('object' === typeof(vizLayer) && 'string' === typeof(vizLayer.catname)) {
             params.from = '1111-2';
             params.name = vizLayer.catname;
@@ -212,6 +248,21 @@ var get_company_info = function(){
         params.from = '518-5';
         params.name = dom.text();
         params.company_link = dom.attr('href');
+    } else if ('m.518.com.tw' == document.location.hostname) {
+        var dom = jQuery('.job-info .job_detail span');
+        if (dom.length == 1) {
+            params.from = '518-3';
+            params.name = dom.text().replace(' ', '');
+            return params;
+        }
+        var dom = jQuery('.job-info .comp-name a');
+        if (dom.length == 1) {
+            params.from = '518-5';
+            params.name = dom.text();
+            params.company_link = dom.attr('href');
+            return params;
+        }
+        return;
     } else {
         return;
     }
@@ -221,23 +272,80 @@ var get_company_info = function(){
 
 var main = function(){
     // TODO: 只有特定網站才要 sendRequest 來顯示 page action
-    chrome.extension.sendRequest({method: 'page'}, function(response){});
+    chrome.runtime.sendMessage({method: 'page'}, function(response){});
 
     var params = get_company_info();
 
     if ('object' == typeof(params) && 'undefined' !== typeof(params.name)) {
+        //popup_function(null, params.name);
+        
         search_package_by_name_api(params.name, params.link, function(package_id, rows){
             get_package_info(function(package_info){
-                chrome.extension.sendRequest({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, package_id)}, function(response) {});
+                popup_function(rows, get_package_info_by_id(package_info, package_id));
             });
         }, function(error_message){
             search_package_by_name(params.name, function(package_id, rows){
                 get_package_info(function(package_info){
-                    chrome.extension.sendRequest({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, package_id)}, function(response) {});
+                    chrome.runtime.sendMessage({method: 'add_match', rows: rows, package_info: get_package_info_by_id(package_info, package_id)}, function(response) {});
                 });
             }, check_name);
         });
     }
+};
+
+var popup_function = function(rows, package_info){
+    // 確認有沒有 #CompanyInfo 的下方視窗
+    if (!document.getElementById('CompanyInfo')) {
+        var content = "<div id='CompanyInfo' style='left:0; right:0; max-height: 20%; overflow-y: scroll; background: #cc103f; bottom: 0; padding: 5px; text-align: left; z-index: 99999; font-size: 14.5px; line-height: 1.5; color: #fff; position: fixed'>"
+            + "<div id='CompanyInfoClose' style='color:#fff;font-weight:bold;float:right;padding:5px 0;width:46px;border:#fff solid 1px;text-align:center;'>"
+            + "<span style='cursor:pointer;'>關</span>"                
+            + "</div>"
+            + "<ul id='CompanyInfoMessage' style='list-style-type: disc'></ul>"
+            + "</div>";
+        document.body.innerHTML = content + document.body.innerHTML;
+        var close = document.getElementById('CompanyInfoClose');
+
+        close.addEventListener('click',function() {
+            document.getElementById('CompanyInfo').style.display = 'none';
+        });
+
+        var info_dom = document.getElementById('CompanyInfo');
+        info_dom.style.background = 'yellow';
+        info_dom.style.color = 'black';
+    }
+        
+        if(!rows) {
+                return;
+        }
+
+    // 確認該資料包有沒有 <li>
+    if (!document.getElementById('CompanyInfo-Package-' + package_info.id)) {
+        var content = '';
+        content += '<li>';
+        content += '<a href="' + htmlspecialchars(package_info.url) + '" target="_blank">' + htmlspecialchars(package_info.name) + '</a>';
+        content += '(共 <span id="CompanyInfo-PackageCount-' + package_info.id + '">1</span> 筆符合)';
+        if (package_info.notice) {
+            content += '<a style="color: red" href="#" onclick="alert(this.title); return false;" title="' + htmlspecialchars(package_info.notice) + '">[注意!]</a>';
+        }
+        content += '<ol style="list-style-type: decimal" id="CompanyInfo-Package-' + package_info.id +'"></ol>';
+        content += '</li>';
+        document.getElementById('CompanyInfoMessage').innerHTML += content;
+    }
+
+    // 塞資料
+    var content = '';
+    content += '<li>';
+    content += htmlspecialchars(rows[1]) + '. ' + htmlspecialchars(rows[2]);
+    if (rows[3]) {
+        content += '[<a style="display:inline" href="' + htmlspecialchars(rows[3]) + (rows[3].indexOf('?') >= 0 ? '&' : '?') + 'utm_source=jobhelper&utm_medium=web&utm_campaign=corp" target="_blank">原始連結</a>]';
+    }
+    if (rows[4]) {
+        content += '[<a style="display:inline" href="' + htmlspecialchars(rows[4]) + '" target="_blank">截圖</a>]';
+    }
+    content += '</li>';
+
+    document.getElementById('CompanyInfo-Package-' + package_info.id).innerHTML += content;
+    document.getElementById('CompanyInfo-PackageCount-' + package_info.id).innerHTML = document.getElementById('CompanyInfo-Package-' + package_info.id).getElementsByTagName('li').length;
 };
 
 main();
