@@ -1,7 +1,7 @@
 var popup_function = function(rows, package_info){
     // 確認有沒有 #CompanyInfo 的下方視窗
     if (!document.getElementById('CompanyInfo')) {
-        var content = var content = "<div id='CompanyInfo' style='width:100%; max-height: 20%; overflow-y: scroll; background: #cc103f; bottom: 0; padding: 5px; text-align: left; z-index: 99999; font-size: 14.5px; line-height: 1.5; color: #fff; position: fixed'>"
+        var content = "<div id='CompanyInfo' style='width:100%; max-height: 20%; overflow-y: scroll; background: #cc103f; bottom: 0; padding: 5px; text-align: left; z-index: 99999; font-size: 14.5px; line-height: 1.5; color: #fff; position: fixed'>"
             + "<ul id='CompanyInfoMessage' style='list-style-type: disc'></ul>"
             + "<div style='color:#fff;font-weight:bold;float:right;padding-right:8px;width:46px;'>"
             + "<span id='CompanyInfoClose' style='cursor:pointer;'>關閉</span>"                
