@@ -12,7 +12,7 @@ var get_choosed_packages = function(cb){
             for (var i = 0; i < package_info.packages.length; i ++) {
                 current_package = package_info.packages[i];
                 if ('undefined' === typeof(items.choosed_packages[current_package.id])) {
-		    // 有指定 default=true 才會變成預設包
+                    // 有指定 default=true 才會變成預設包
                     if (current_package && current_package['default']) {
                         choosed_packages[current_package.id] = true;
                     }
@@ -51,7 +51,7 @@ var _package_csv = null;
 var get_package_csv_from_storage = function(cb){
     if (null !== _package_csv) {
         cb(_package_csv);
-	return;
+        return;
     }
     chrome.storage.local.get({package_csv: {}}, function(items){
         _package_csv = items.package_csv;
@@ -76,7 +76,7 @@ var get_package_csv_by_id = function(id, cb){
             }
             $.get('https://jobhelper.g0v.ronny.tw/api/getpackage?id=' + parseInt(id), function(package_csv){
                 _package_csv[id] = package_csv;
-		chrome.storage.local.set({package_csv: _package_csv});
+                chrome.storage.local.set({package_csv: _package_csv});
                 cb(_package_csv[id].content);
             });
         });
@@ -117,22 +117,22 @@ var check_name = function(web_name, db_name){
 
 var search_package_by_name = function(name, cb, checker){
     get_choosed_packages(function(choosed_packages){
-	for (var id in choosed_packages) {
-	    (function(id){
-		get_package_csv_by_id(id, function(package_csv){
-		    if ('undefined' == typeof(package_csv)) {
-			return;
-		    }
-		    var rows;
-		    for (var i = 0; i < package_csv.length; i ++) {
-			rows = package_csv[i];
-			if (checker(name, rows[0])) {
-			    cb(id, rows);
-			}
-		    }
-		});
-	    })(id);
-	}
+        for (var id in choosed_packages) {
+            (function(id){
+                get_package_csv_by_id(id, function(package_csv){
+                    if ('undefined' == typeof(package_csv)) {
+                        return;
+                    }
+                    var rows;
+                    for (var i = 0; i < package_csv.length; i ++) {
+                        rows = package_csv[i];
+                        if (checker(name, rows[0])) {
+                            cb(id, rows);
+                        }
+                    }
+                });
+            })(id);
+        }
     });
 };
 
