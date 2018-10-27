@@ -1,13 +1,15 @@
 var popup_function = function(rows, package_info){
     // 確認有沒有 #CompanyInfo 的下方視窗
     if (!document.getElementById('CompanyInfo')) {
-	var content = "<div id='CompanyInfo' style='max-height: 20%; overflow-y: scroll; background: #cc103f; bottom: 0; padding: 5px; text-align: left; z-index: 99999; font-size: 14.5px; line-height: 1.5; color: #fff; position: fixed'>"
-	    + "<ul id='CompanyInfoMessage' style='list-style-type: disc'></ul>"
-	    + "<div style='color:#fff;font-weight:bold;float:right;padding-right:8px;width:46px;'>"
-	    + "<span id='CompanyInfoClose' style='cursor:pointer;'>關閉</span>"                
-	    + "</div></div>";
-	document.body.innerHTML = content + document.body.innerHTML;
-	var close = document.getElementById('CompanyInfoClose');
+        var content_el = document.createElement('div');
+        content_el.setAttribute('id', 'CompanyInfo');
+        content_el.setAttribute('style', 'max-height: 20%; overflow-y: scroll; background: #cc103f; bottom: 0; padding: 5px; text-align: left; z-index: 99999; font-size: 14.5px; line-height: 1.5; color: #fff; position: fixed');
+        content_el.innerHTML = '<ul id="CompanyInfoMessage" style="list-style-type: disc"></ul>'
+            + '<div style="color:#fff;font-weight:bold;float:right;padding-right:8px;width:46px;">'
+            + '<span id="CompanyInfoClose" style="cursor:pointer;">關閉</span></div>';
+
+        document.body.insertBefore(content_el, document.body.childNodes[0]);
+        var close = document.getElementById('CompanyInfoClose');
 
 	close.addEventListener('click',function() {
 	    document.getElementById('CompanyInfo').style.display = 'none';
