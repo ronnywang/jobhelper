@@ -6,7 +6,8 @@ var popup_function = function(rows, package_info){
 	    + "<div style='color:#fff;font-weight:bold;float:right;padding-right:8px;width:46px;'>"
 	    + "<span id='CompanyInfoClose' style='cursor:pointer;'>關閉</span>"                
 	    + "</div></div>";
-	document.body.innerHTML = content + document.body.innerHTML;
+	document.body.insertAdjacentHTML( 'beforeend', content );
+	
 	var close = document.getElementById('CompanyInfoClose');
 
 	close.addEventListener('click',function() {
